@@ -1,18 +1,19 @@
 import { ITicketDoc } from "./ticket";
 import { Schema, model, Model, Document } from "mongoose";
 import { OrderStatus } from "@nhannt-tickets/common";
+export { OrderStatus };
 interface IOrder {
   userId: string;
   status: OrderStatus;
   expireAt: Date;
-  ticker: ITicketDoc;
+  ticket: ITicketDoc;
 }
 
 interface IOrderDoc extends Document {
   userId: string;
   status: OrderStatus;
   expireAt: Date;
-  ticker: ITicketDoc;
+  ticket: ITicketDoc;
 }
 interface ITicketModel extends Model<IOrderDoc> {
   build(user: IOrder): IOrderDoc;

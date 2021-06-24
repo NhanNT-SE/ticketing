@@ -2,6 +2,7 @@ import { Schema, model, Model, Document } from "mongoose";
 import { Order, OrderStatus } from "./order";
 
 interface ITicker {
+  id: string;
   title: string;
   price: number;
 }
@@ -15,7 +16,7 @@ interface ITicketModel extends Model<ITicketDoc> {
   build(user: ITicker): ITicketDoc;
 }
 
-const schema = new Schema<ITicker>(
+const schema = new Schema(
   {
     title: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
@@ -30,10 +31,16 @@ const schema = new Schema<ITicker>(
   }
 );
 schema.statics.build = (ticket: ITicker) => {
-  return new Ticket(ticket);
+  return new Ticket({
+    _id: ticket.id,
+    title: ticket.title,
+    price: ticket.price,
+  });
 };
 schema.methods.isReserved = async function () {
   const existingOrder = await Order.findOne({
+    //@ts-ignore
+    // ticket: this.id,
     ticket: this,
     status: {
       $in: [

@@ -1,5 +1,4 @@
 import { Schema, model, Model, Document } from "mongoose";
-
 interface ITicker {
   title: string;
   price: number;
@@ -10,18 +9,21 @@ interface ITicketDoc extends Document {
   title: string;
   price: number;
   userId: string;
+  version: number;
 }
 interface ITicketModel extends Model<ITicketDoc> {
   build(user: ITicker): ITicketDoc;
 }
 
-const schema = new Schema<ITicker>(
+const schema = new Schema(
   {
     title: { type: String, required: true },
     price: { type: Number, required: true },
     userId: { type: String, required: true },
   },
   {
+    optimisticConcurrency: true,
+    versionKey: "version",
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;

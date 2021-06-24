@@ -9,8 +9,8 @@ import {
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { Types } from "mongoose";
-import { OrderCancelledPublisher } from "../events/publisher/order-cancelled-publisher";
-import { OrderCreatedPublisher } from "../events/publisher/order-created-publisher";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
 import { natsClient } from "../nats-client";

@@ -8,8 +8,8 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { natsClient } from "../nats-client";
-import { TicketCreatedPublisher } from "../publisher/ticket-created-publisher";
-import { TicketUpdatedPublisher } from "../publisher/ticket-updated-publisher";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 const router = express.Router();
 
 router.post(
@@ -31,6 +31,7 @@ router.post(
     }).save();
     new TicketCreatedPublisher(natsClient.client).publish({
       id: ticket.id,
+      version: ticket.version,
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
@@ -65,6 +66,7 @@ router.patch(
       .save();
     new TicketUpdatedPublisher(natsClient.client).publish({
       id: ticket.id,
+      version: ticket.version,
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,

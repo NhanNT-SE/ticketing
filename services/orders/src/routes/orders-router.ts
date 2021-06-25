@@ -68,6 +68,7 @@ router.post(
 
     new OrderCreatedPublisher(natsClient.client).publish({
       id: order.id,
+      version:order.version,
       status: order.status,
       userId: order.userId,
       expiresAt: order.expireAt.toISOString(),
@@ -94,6 +95,8 @@ router.delete(
     await order.save();
     new OrderCancelledPublisher(natsClient.client).publish({
       id: order.id,
+      version:order.version,
+
       ticket: {
         id: order.ticket.id,
       },

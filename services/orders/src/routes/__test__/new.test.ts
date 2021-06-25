@@ -16,6 +16,7 @@ it("returns an error if the ticket does not exists", async () => {
 });
 it("returns an error if the ticket is already reserved", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();
@@ -35,6 +36,7 @@ it("returns an error if the ticket is already reserved", async () => {
 });
 it("reserver a ticket", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();
@@ -48,6 +50,8 @@ it("reserver a ticket", async () => {
 });
 it("emits an order created event", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+
     title: "concert",
     price: 20,
   }).save();

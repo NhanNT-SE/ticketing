@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
-import { Order, OrderStatus } from "../../models/order";
 import { Ticket } from "../../models/ticket";
 
 it("fetches the orders", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();
@@ -25,6 +25,7 @@ it("fetches the orders", async () => {
 });
 it("returns an error if one user tries to fetch another users orders", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();

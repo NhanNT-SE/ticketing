@@ -7,6 +7,7 @@ import { natsClient } from "../../nats-client";
 
 it("marks an order as cancelled", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();
@@ -29,6 +30,7 @@ it("marks an order as cancelled", async () => {
 });
 it("emits a order cancelled event", async () => {
   const ticket = await Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   }).save();

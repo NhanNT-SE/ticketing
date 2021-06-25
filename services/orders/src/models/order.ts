@@ -14,6 +14,7 @@ interface IOrderDoc extends Document {
   status: OrderStatus;
   expireAt: Date;
   ticket: ITicketDoc;
+  version: number;
 }
 interface ITicketModel extends Model<IOrderDoc> {
   build(user: IOrder): IOrderDoc;
@@ -35,6 +36,8 @@ const schema = new Schema<IOrder>(
     },
   },
   {
+    optimisticConcurrency: true,
+    versionKey: "version",
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;

@@ -10,6 +10,7 @@ interface ITicketDoc extends Document {
   price: number;
   userId: string;
   version: number;
+  orderId?: string;
 }
 interface ITicketModel extends Model<ITicketDoc> {
   build(user: ITicker): ITicketDoc;
@@ -20,6 +21,7 @@ const schema = new Schema(
     title: { type: String, required: true },
     price: { type: Number, required: true },
     userId: { type: String, required: true },
+    orderId: { type: String },
   },
   {
     optimisticConcurrency: true,

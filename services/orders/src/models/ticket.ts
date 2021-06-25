@@ -10,10 +10,15 @@ interface ITicker {
 export interface ITicketDoc extends Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 interface ITicketModel extends Model<ITicketDoc> {
   build(user: ITicker): ITicketDoc;
+  findByEvent(event: {
+    id: string;
+    version: number;
+  }): Promise<ITicketDoc | null>;
 }
 
 const schema = new Schema(
@@ -22,6 +27,8 @@ const schema = new Schema(
     price: { type: Number, required: true, min: 0 },
   },
   {
+    optimisticConcurrency: true,
+    versionKey: "version",
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;
@@ -30,6 +37,14 @@ const schema = new Schema(
     },
   }
 );
+
+schema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: event.version - 1,
+  });
+};
+
 schema.statics.build = (ticket: ITicker) => {
   return new Ticket({
     _id: ticket.id,

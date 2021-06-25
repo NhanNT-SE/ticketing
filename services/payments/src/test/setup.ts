@@ -4,13 +4,14 @@ import mongoose from "mongoose";
 declare global {
   namespace NodeJS {
     interface Global {
-      signin(): string[];
+      signin(id?: string): string[];
     }
   }
 }
 jest.mock("../nats-client");
 let mongo: MongoMemoryServer;
-
+process.env.STRIPE_KEY =
+  "sk_test_51J6EkrIUiObmJ9aLSEqZb2toueZgGniqGRLURaDfnHxt8iW09HiLQeUDPUDBv4GP8dImugNBMb4lWz4v62ga5ZUJ006tA9yek9";
 beforeAll(async () => {
   process.env.JWT_KEY = "test-secret";
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -37,9 +38,9 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = () => {
+global.signin = (id?: string) => {
   const payload = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: id || new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
   const token = jwt.sign(payload, process.env.JWT_KEY!);

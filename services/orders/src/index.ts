@@ -1,6 +1,7 @@
 import { connect } from "mongoose";
 import { app } from "./app";
 import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
+import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { natsClient } from "./nats-client";
@@ -38,6 +39,7 @@ const PORT = 3000 || process.env.PORT;
     new TicketCreatedListener(natsClient.client).listen();
     new TicketUpdatedListener(natsClient.client).listen();
     new ExpirationCompleteListener(natsClient.client).listen();
+    new PaymentCreatedListener(natsClient.client).listen();
     await connect(process.env.MONGO_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,

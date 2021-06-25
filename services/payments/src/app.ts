@@ -6,6 +6,7 @@ import {
 import cookieSession from "cookie-session";
 import express from "express";
 import "express-async-errors";
+import { paymentRouter } from "./routes/payment-router";
 
 const app = express();
 app.set("trust proxy", true);
@@ -18,7 +19,7 @@ app.use(
   })
 );
 app.use(currentUser);
-
+app.use(paymentRouter);
 app.all("*", async (req, res) => {
   throw new NotFoundError();
 });

@@ -15,7 +15,7 @@ interface IOrderDoc extends Document {
   price: number;
   status: OrderStatus;
 }
-interface ITicketModel extends Model<IOrderDoc> {
+interface IOrderModel extends Model<IOrderDoc> {
   build(user: IOrder): IOrderDoc;
 }
 
@@ -48,5 +48,5 @@ schema.statics.build = (order: IOrder) => {
     status: order.status,
   });
 };
-const Order = model<IOrderDoc, ITicketModel>("Order", schema);
+const Order = model<IOrderDoc, IOrderModel>("Order", schema);
 export { Order };

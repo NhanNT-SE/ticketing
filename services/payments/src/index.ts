@@ -1,9 +1,9 @@
+import { natsClient } from "./nats-client";
 import { connect } from "mongoose";
 import { app } from "./app";
-import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
-import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
-import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
-import { natsClient } from "./nats-client";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+
 const PORT = 3000 || process.env.PORT;
 // CONNECT DATABASE
 (async function () {
@@ -35,9 +35,8 @@ const PORT = 3000 || process.env.PORT;
     });
     process.on("SIGINT", () => natsClient.client.close());
     process.on("SIGTERM", () => natsClient.client.close());
-    new TicketCreatedListener(natsClient.client).listen();
-    new TicketUpdatedListener(natsClient.client).listen();
-    new ExpirationCompleteListener(natsClient.client).listen();
+    new OrderCreatedListener(natsClient.client).listen();
+    new OrderCancelledListener(natsClient.client).listen();
     await connect(process.env.MONGO_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,

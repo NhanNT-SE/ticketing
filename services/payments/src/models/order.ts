@@ -1,38 +1,31 @@
-import { ITicketDoc } from "./ticket";
 import { Schema, model, Model, Document } from "mongoose";
 import { OrderStatus } from "@nhannt-tickets/common";
 export { OrderStatus };
 interface IOrder {
+  id: string;
+  version: number;
   userId: string;
+  price: number;
   status: OrderStatus;
-  expireAt: Date;
-  ticket: ITicketDoc;
 }
 
 interface IOrderDoc extends Document {
-  userId: string;
-  status: OrderStatus;
-  expireAt: Date;
-  ticket: ITicketDoc;
   version: number;
+  userId: string;
+  price: number;
+  status: OrderStatus;
 }
 interface ITicketModel extends Model<IOrderDoc> {
   build(user: IOrder): IOrderDoc;
 }
 
-const schema = new Schema<IOrder>(
+const schema = new Schema(
   {
     userId: { type: String, required: true },
+    price: { type: Number, require: true },
     status: {
       type: String,
       required: true,
-      enum: Object.values(OrderStatus),
-      default: OrderStatus.Created,
-    },
-    expireAt: { type: Schema.Types.Date },
-    ticket: {
-      type: Schema.Types.ObjectId,
-      ref: "Ticket",
     },
   },
   {
@@ -47,7 +40,13 @@ const schema = new Schema<IOrder>(
   }
 );
 schema.statics.build = (order: IOrder) => {
-  return new Order(order);
+  return new Order({
+    _id: order.id,
+    version: order.version,
+    price: order.price,
+    userId: order.userId,
+    status: order.status,
+  });
 };
 const Order = model<IOrderDoc, ITicketModel>("Order", schema);
 export { Order };

@@ -1,11 +1,9 @@
-import { Message } from "node-nats-streaming";
 import { TicketCreatedEvent } from "@nhannt-tickets/common";
 import { Types } from "mongoose";
-import request from "supertest";
-import { app } from "../../../app";
+import { Message } from "node-nats-streaming";
+import { Ticket } from "../../../models/ticket";
 import { natsClient } from "../../../nats-client";
 import { TicketCreatedListener } from "../ticket-created-listener";
-import { Ticket } from "../../../models/ticket";
 
 const setup = async () => {
   const listener = new TicketCreatedListener(natsClient.client);

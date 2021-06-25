@@ -34,6 +34,22 @@ build:
         manual:
           - dest: .
             src: "src/**/*.ts"
+    - image: us.gcr.io/ticketing-dev-317013/expiration
+      context: "./services/expiration"
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: us.gcr.io/ticketing-dev-317013/payments
+      context: "./services/payments"
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
     - image: us.gcr.io/ticketing-dev-317013/client
       context: "./client"
       docker:

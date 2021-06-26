@@ -50,5 +50,5 @@ const PORT = 3000 || process.env.PORT;
   } catch (error) {
     console.log(`Error connecting to the database. \n${error}`);
   }
-  app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Order service listening on port ${PORT}`));
 })();

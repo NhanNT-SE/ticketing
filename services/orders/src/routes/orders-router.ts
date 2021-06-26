@@ -15,7 +15,7 @@ import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
 import { natsClient } from "../nats-client";
 const router = Router();
-const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+const EXPIRATION_WINDOW_SECONDS = 1 * 60;
 router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
   const orders = await Order.find({ userId: req.currentUser!.id }).populate(
     "ticket"

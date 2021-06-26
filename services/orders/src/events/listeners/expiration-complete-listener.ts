@@ -1,22 +1,19 @@
-import { queueGroupName } from "./queue-group-name";
-import { Message } from "node-nats-streaming";
 import {
   ExpirationCompleteEvent,
   Listener,
   OrderStatus,
-  Subjects,
-  TicketCreatedEvent,
+  Subjects
 } from "@nhannt-tickets/common";
-import { Ticket } from "../../models/ticket";
+import { Message } from "node-nats-streaming";
 import { Order } from "../../models/order";
 import { OrderCancelledPublisher } from "../publishers/order-cancelled-publisher";
+import { queueGroupName } from "./queue-group-name";
 
 export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent> {
   readonly subject = Subjects.ExpirationComplete;
   queueGroupName = queueGroupName;
   async onMessage(data: ExpirationCompleteEvent["data"], msg: Message) {
-    const { orderId } = data;
-    const order = await Order.findById(orderId).populate("ticket");
+    const order = await Order.findById(data.orderId).populate("ticket");
     if (!order) {
       throw new Error("Order not found");
     }

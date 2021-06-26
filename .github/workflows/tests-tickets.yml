@@ -1,6 +1,8 @@
 name: tests-tickets
 on:
-  pull_request
+  pull_request:
+    paths:
+      - 'services/tickets/**'
 jobs:
   build:
     runs-on: ubuntu-latest

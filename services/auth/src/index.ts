@@ -3,6 +3,7 @@ import { app } from "./app";
 const PORT = 3000 || process.env.PORT;
 // CONNECT DATABASE
 (async function () {
+  console.log("starting up...")
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be define");
   }

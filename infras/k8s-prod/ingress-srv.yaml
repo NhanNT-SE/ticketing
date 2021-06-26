@@ -7,6 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
+  # add domain nam or host (187.235.12.12) of your server
     - host: ticketing.dev
       http:
         paths:

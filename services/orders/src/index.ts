@@ -8,7 +8,7 @@ import { natsClient } from "./nats-client";
 const PORT = 3000 || process.env.PORT;
 // CONNECT DATABASE
 (async function () {
-  console.log("starting up...")
+  console.log("starting..")
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be define");
   }
